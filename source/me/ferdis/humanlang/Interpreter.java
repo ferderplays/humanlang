@@ -63,6 +63,15 @@ public class Interpreter
                     Printer.print(output);
                 }
             }
+            /* variable methods */
+            else if (argument.startsWith("whole add "))
+            {
+                Number.add(argument, variables);
+            }
+            else if (argument.startsWith("real add "))
+            {
+                Number.addReal(argument, variables);
+            }
             /* variables */
             else
             {
