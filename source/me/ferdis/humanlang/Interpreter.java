@@ -2,38 +2,16 @@ package me.ferdis.humanlang;
 
 import me.ferdis.humanlang.tools.Printer;
 import me.ferdis.humanlang.types.Number;
+import me.ferdis.humanlang.types.Text;
 
 import java.util.HashMap;
 
 public class Interpreter
 {
+
     public static HashMap<String, Object> variables = new HashMap<>();
 
-    public static void interpret (String[] code)
-    {
-        for (String argument : code)
-        {
-            // a print command, this command prints whatever u give it to print
-            if (argument.startsWith("print \""))
-            {
-                String output = "";
-                if (argument.startsWith("print line"))
-                {
-                    output = argument.replace("print line \"", "").replace("\";", "");
-
-                    Printer.line(output);
-                }
-                else
-                {
-                    output = argument.replace("print \"", "").replace("\";", "");
-
-                    Printer.print(output);
-                }
-            }
-        }
-    }
-
-    public static void interpret (String argument)
+    public static void interpret(String argument)
     {
 
         if (argument.endsWith(";"))
@@ -63,7 +41,8 @@ public class Interpreter
                     Printer.print(output);
                 }
             }
-            /* variable methods */
+
+            /* numeral operations */
             else if (argument.startsWith("whole add "))
             {
                 Number.add(argument, variables);
@@ -72,13 +51,71 @@ public class Interpreter
             {
                 Number.addReal(argument, variables);
             }
+            else if (argument.startsWith("whole subtract "))
+            {
+                Number.subtract(argument, variables);
+            }
+            else if (argument.startsWith("real subtract "))
+            {
+                Number.subtractReal(argument, variables);
+            }
+            else if (argument.startsWith("whole multiply "))
+            {
+                Number.multiply(argument, variables);
+            }
+            else if (argument.startsWith("real multiply "))
+            {
+                Number.multiplyReal(argument, variables);
+            }
+            else if (argument.startsWith("whole divide "))
+            {
+                Number.divide(argument, variables);
+            }
+            else if (argument.startsWith("real divide "))
+            {
+                Number.divideReal(argument, variables);
+            }
+            else if (argument.startsWith("whole to-string "))
+            {
+                Number.stringify(argument, variables);
+            }
+            else if (argument.startsWith("real to-string "))
+            {
+                Number.stringifyReal(argument, variables);
+            }
+            else if (argument.startsWith("get-whole-number "))
+            {
+                Number.parseWhole(argument, variables);
+            }
+            else if (argument.startsWith("get-real-number "))
+            {
+                Number.parseReal(argument, variables);
+            }
+
+            /* textual operations */
+
+            /* statements */
+            else if (argument.startsWith("if ("))
+            {
+
+            }
+
+            /* storage operators */
+            else if (argument.startsWith("storage remove "))
+            {
+                String variableName = argument.replace("storage remove ", "")
+                        .replace(";", "");
+
+                variables.remove(variableName);
+            }
+            else if (argument.equals("storage clear;"))
+            {
+                variables.clear();
+            }
+
             /* variables */
             else
             {
-                String variableValue = argument.replace(argument.substring(0, argument.indexOf("=")), "")
-                        .replace(" ", "")
-                        .replace("=", "")
-                        .replace(";", "");
                 if (argument.startsWith("whole number "))
                 {
                     Number.registerWhole(argument, variables);
@@ -87,18 +124,9 @@ public class Interpreter
                 {
                     Number.registerReal(argument, variables);
                 }
-                else if (argument.startsWith("text"))
+                else if (argument.startsWith("text "))
                 {
-                    String variableName = argument.replace(argument.substring(argument.indexOf("=")), "")
-                            .replace(" ", "")
-                            .replace("=", "")
-                            .replace("\"", "")
-                            .replace(";", "")
-                            .replace("text", "");
-
-                    variables.put(variableName, variableValue);
-
-                    Printer.line("[TEXT] name: " + variableName + " | value: " + variableValue);
+                    Text.register(argument, variables);
                 }
             }
         }
