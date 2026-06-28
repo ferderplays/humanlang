@@ -3,11 +3,12 @@ package me.ferdis.humanlang.types;
 
 import me.ferdis.humanlang.tools.Printer;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Number
 {
-    public static void registerWhole(String argument, HashMap<String, Object> storage)
+    public static void registerWhole(String argument, HashMap<String, Object> storage, HashMap<String, String> typeStorage)
     {
         String variableValue = argument.replace(argument.substring(0, argument.indexOf("=")), "")
                 .replace(" ", "")
@@ -23,12 +24,14 @@ public class Number
 
         storage.put(variableName, whole);
 
+        typeStorage.put(variableName, "WHOLE NUMBER");
+
         Printer.line("[WHOLE NUMBER] name: " + variableName + " | value: " + whole);
 
         //Printer.print(wholeNumberVariables);
     }
 
-    public static void registerReal(String argument, HashMap<String, Object> storage)
+    public static void registerReal(String argument, HashMap<String, Object> storage, HashMap<String, String> typeStorage)
     {
         String variableValue = argument.replace(argument.substring(0, argument.indexOf("=")), "")
                 .replace(" ", "")
@@ -44,6 +47,8 @@ public class Number
 
         storage.put(variableName, whole);
 
+        typeStorage.put(variableName, "WHOLE NUMBER");
+
         Printer.line("[WHOLE NUMBER] name: " + variableName + " | value: " + whole);
 
         //Printer.print(wholeNumberVariables);
@@ -51,14 +56,12 @@ public class Number
 
     public static void add(String argument, HashMap<String, Object> storage)
     {
-        String variable = argument.replace("whole add ", "")
-                .replace(argument.substring(argument.indexOf(",")), "")
-                .replace(" ", "");
 
-        String additionValue = argument.replace(argument.substring(0, argument.indexOf(",")), "")
-                .replace(" ", "")
-                .replace(";", "")
-                .replace(",", "");
+        String variable = argument.substring(0, argument.indexOf("."));
+
+        String additionValue = argument.replace(variable, "")
+                .replace(".add(", "")
+                .replace(");", "");
 
         int added = Integer.parseInt(additionValue);
 
@@ -72,14 +75,11 @@ public class Number
 
     public static void addReal(String argument, HashMap<String, Object> storage)
     {
-        String variable = argument.replace("real add ", "")
-                .replace(argument.substring(argument.indexOf(",")), "")
-                .replace(" ", "");
+        String variable = argument.substring(0, argument.indexOf("."));
 
-        String additionValue = argument.replace(argument.substring(0, argument.indexOf(",")), "")
-                .replace(" ", "")
-                .replace(";", "")
-                .replace(",", "");
+        String additionValue = argument.replace(variable, "")
+                .replace(".add(", "")
+                .replace(");", "");
 
         double added = Double.parseDouble(additionValue);
 
@@ -93,14 +93,11 @@ public class Number
 
     public static void subtract(String argument, HashMap<String, Object> storage)
     {
-        String variable = argument.replace("whole subtract ", "")
-                .replace(argument.substring(argument.indexOf(",")), "")
-                .replace(" ", "");
+        String variable = argument.substring(0, argument.indexOf("."));
 
-        String subtractorValue = argument.replace(argument.substring(0, argument.indexOf(",")), "")
-                .replace(" ", "")
-                .replace(";", "")
-                .replace(",", "");
+        String subtractorValue = argument.replace(variable, "")
+                .replace(".subtract(", "")
+                .replace(");", "");
 
         int subtractor = Integer.parseInt(subtractorValue);
 
@@ -114,14 +111,11 @@ public class Number
 
     public static void subtractReal(String argument, HashMap<String, Object> storage)
     {
-        String variable = argument.replace("real subtract ", "")
-                .replace(argument.substring(argument.indexOf(",")), "")
-                .replace(" ", "");
+        String variable = argument.substring(0, argument.indexOf("."));
 
-        String subtractorValue = argument.replace(argument.substring(0, argument.indexOf(",")), "")
-                .replace(" ", "")
-                .replace(";", "")
-                .replace(",", "");
+        String subtractorValue = argument.replace(variable, "")
+                .replace(".subtract(", "")
+                .replace(");", "");
 
         double subtractor = Double.parseDouble(subtractorValue);
 
@@ -135,14 +129,11 @@ public class Number
 
     public static void multiply(String argument, HashMap<String, Object> storage)
     {
-        String variable = argument.replace("whole multiply ", "")
-                .replace(argument.substring(argument.indexOf(",")), "")
-                .replace(" ", "");
+        String variable = argument.substring(0, argument.indexOf("."));
 
-        String multiplicatorValue = argument.replace(argument.substring(0, argument.indexOf(",")), "")
-                .replace(" ", "")
-                .replace(";", "")
-                .replace(",", "");
+        String multiplicatorValue = argument.replace(variable, "")
+                .replace(".multiply(", "")
+                .replace(");", "");
 
         int multiplicator = Integer.parseInt(multiplicatorValue);
 
@@ -156,14 +147,11 @@ public class Number
 
     public static void multiplyReal(String argument, HashMap<String, Object> storage)
     {
-        String variable = argument.replace("real multiply ", "")
-                .replace(argument.substring(argument.indexOf(",")), "")
-                .replace(" ", "");
+        String variable = argument.substring(0, argument.indexOf("."));
 
-        String multiplicatorValue = argument.replace(argument.substring(0, argument.indexOf(",")), "")
-                .replace(" ", "")
-                .replace(";", "")
-                .replace(",", "");
+        String multiplicatorValue = argument.replace(variable, "")
+                .replace(".multiply(", "")
+                .replace(");", "");
 
         double multiplicator = Double.parseDouble(multiplicatorValue);
 
@@ -177,14 +165,11 @@ public class Number
 
     public static void divide(String argument, HashMap<String, Object> storage)
     {
-        String variable = argument.replace("whole divide ", "")
-                .replace(argument.substring(argument.indexOf(",")), "")
-                .replace(" ", "");
+        String variable = argument.substring(0, argument.indexOf("."));
 
-        String dividerValue = argument.replace(argument.substring(0, argument.indexOf(",")), "")
-                .replace(" ", "")
-                .replace(";", "")
-                .replace(",", "");
+        String dividerValue = argument.replace(variable, "")
+                .replace(".divide(", "")
+                .replace(");", "");
 
         int divider = Integer.parseInt(dividerValue);
 
@@ -198,14 +183,11 @@ public class Number
 
     public static void divideReal(String argument, HashMap<String, Object> storage)
     {
-        String variable = argument.replace("real divide ", "")
-                .replace(argument.substring(argument.indexOf(",")), "")
-                .replace(" ", "");
+        String variable = argument.substring(0, argument.indexOf("."));
 
-        String dividerValue = argument.replace(argument.substring(0, argument.indexOf(",")), "")
-                .replace(" ", "")
-                .replace(";", "")
-                .replace(",", "");
+        String dividerValue = argument.replace(variable, "")
+                .replace(".divide(", "")
+                .replace(");", "");
 
         double divider = Double.parseDouble(dividerValue);
 

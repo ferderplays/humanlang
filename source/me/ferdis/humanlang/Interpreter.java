@@ -4,12 +4,14 @@ import me.ferdis.humanlang.tools.Printer;
 import me.ferdis.humanlang.types.Number;
 import me.ferdis.humanlang.types.Text;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Interpreter
 {
 
     public static HashMap<String, Object> variables = new HashMap<>();
+    public static HashMap<String, String> variablesTypes = new HashMap<>();
 
     public static void interpret(String argument)
     {
@@ -43,38 +45,6 @@ public class Interpreter
             }
 
             /* numeral operations */
-            else if (argument.startsWith("whole add "))
-            {
-                Number.add(argument, variables);
-            }
-            else if (argument.startsWith("real add "))
-            {
-                Number.addReal(argument, variables);
-            }
-            else if (argument.startsWith("whole subtract "))
-            {
-                Number.subtract(argument, variables);
-            }
-            else if (argument.startsWith("real subtract "))
-            {
-                Number.subtractReal(argument, variables);
-            }
-            else if (argument.startsWith("whole multiply "))
-            {
-                Number.multiply(argument, variables);
-            }
-            else if (argument.startsWith("real multiply "))
-            {
-                Number.multiplyReal(argument, variables);
-            }
-            else if (argument.startsWith("whole divide "))
-            {
-                Number.divide(argument, variables);
-            }
-            else if (argument.startsWith("real divide "))
-            {
-                Number.divideReal(argument, variables);
-            }
             else if (argument.startsWith("whole to-string "))
             {
                 Number.stringify(argument, variables);
@@ -93,6 +63,18 @@ public class Interpreter
             }
 
             /* textual operations */
+            else if (argument.startsWith("to-upper("))
+            {
+                Text.uppercase(argument, variables);
+            }
+            else if (argument.startsWith("to-lower("))
+            {
+                Text.lowercase(argument, variables);
+            }
+            else if (argument.startsWith("replace("))
+            {
+                Text.replace(argument, variables);
+            }
 
             /* statements */
             else if (argument.startsWith("if ("))
@@ -107,6 +89,7 @@ public class Interpreter
                         .replace(";", "");
 
                 variables.remove(variableName);
+                variablesTypes.remove(variableName);
             }
             else if (argument.equals("storage clear;"))
             {
@@ -114,19 +97,79 @@ public class Interpreter
             }
 
             /* variables */
+            else if (argument.startsWith("whole number "))
+            {
+                Number.registerWhole(argument, variables, variablesTypes);
+            }
+            else if (argument.startsWith("real number "))
+            {
+                Number.registerReal(argument, variables, variablesTypes);
+            }
+            else if (argument.startsWith("text "))
+            {
+                Text.register(argument, variables);
+            }
             else
             {
-                if (argument.startsWith("whole number "))
+                /* variable functions */
+
+                ArrayList<String> variableNames = new ArrayList<>(variables.keySet());
+
+                for (String variableName : variableNames)
                 {
-                    Number.registerWhole(argument, variables);
-                }
-                else if (argument.startsWith("real number "))
-                {
-                    Number.registerReal(argument, variables);
-                }
-                else if (argument.startsWith("text "))
-                {
-                    Text.register(argument, variables);
+                    Printer.line("current variable: " + variableName);
+                    if (argument.startsWith(variableName))
+                    {
+                        switch (variablesTypes.get(variableName))
+                        {
+                            case "WHOLE NUMBER":
+
+                                /* numeric operations */
+                                if (argument.startsWith(variableName + ".add("))
+                                {
+                                    Number.add(argument, variables);
+                                }
+                                else if (argument.startsWith(variableName + ".subtract("))
+                                {
+                                    Number.subtract(argument, variables);
+                                }
+                                else if (argument.startsWith(variableName + ".multiply("))
+                                {
+                                    Number.multiply(argument, variables);
+                                }
+                                else if (argument.startsWith(variableName + ".divide("))
+                                {
+                                    Number.divide(argument, variables);
+                                }
+
+                                break;
+
+                            case "REAL NUMBER":
+
+                                /* numeric operations */
+                                if (argument.startsWith(variableName + ".add("))
+                                {
+                                    Number.addReal(argument, variables);
+                                }
+                                else if (argument.startsWith(variableName + ".subtract("))
+                                {
+                                    Number.subtractReal(argument, variables);
+                                }
+                                else if (argument.startsWith(variableName + ".multiply("))
+                                {
+                                    Number.multiplyReal(argument, variables);
+                                }
+                                else if (argument.startsWith(variableName + ".divide("))
+                                {
+                                    Number.divideReal(argument, variables);
+                                }
+
+                                break;
+
+                            case "TEXT":
+                                break;
+                        }
+                    }
                 }
             }
         }
