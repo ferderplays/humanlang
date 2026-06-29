@@ -201,47 +201,46 @@ public class Number
 
     public static void stringify(String argument, HashMap<String, Object> storage)
     {
-        String variable = argument.replace("whole to-string ", "")
-                .replace(";", "");
+        String variable = argument.substring(0, argument.indexOf("."));
 
         Integer toStringify = (Integer) storage.get(variable);
 
-        String stringified = toStringify.toString();
-
-        storage.put(variable + "_string", stringified);
+        storage.put(variable + "_string", toStringify.toString());
     }
 
     public static void stringifyReal(String argument, HashMap<String, Object> storage)
     {
-        String variable = argument.replace("real to-string ", "")
-                .replace(";", "");
+        String variable = argument.substring(0, argument.indexOf("."));
 
         Double toStringify = (Double) storage.get(variable);
 
-        String stringified = toStringify.toString();
+        storage.put(variable + "_string", toStringify.toString());
+    }
 
-        storage.put(variable + "_string", stringified);
+    public static String toString(String argument, HashMap<String, Object> storage)
+    {
+        String variable = argument.substring(0, argument.indexOf("."));
+
+        Integer toStringify = (Integer) storage.get(variable);
+
+        return toStringify.toString();
     }
 
     public static void parseWhole(String argument, HashMap<String, Object> storage)
     {
-        String variable = argument.replace("get-whole-number ", "")
-                .replace(";", "");
+        String variable = argument.substring(0, argument.indexOf("."));
 
-        String toParse = storage.get(variable).toString()
-                .replace("\"", "");
+        String toParse = (String) storage.get(variable);
 
         storage.put(variable + "_whole", Integer.parseInt(toParse));
     }
 
     public static void parseReal(String argument, HashMap<String, Object> storage)
     {
-        String variable = argument.replace("get-whole-number ", "")
-                .replace(";", "");
+        String variable = argument.substring(0, argument.indexOf("."));
 
-        String toParse = storage.get(variable).toString()
-                .replace("\"", "");
+        String toParse = (String) storage.get(variable);
 
-        storage.put(variable + "_whole", Double.parseDouble(toParse));
+        storage.put(variable + "_real", Double.parseDouble(toParse));
     }
 }

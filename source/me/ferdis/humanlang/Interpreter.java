@@ -44,24 +44,6 @@ public class Interpreter
                 }
             }
 
-            /* numeral operations */
-            else if (argument.startsWith("whole to-string "))
-            {
-                Number.stringify(argument, variables);
-            }
-            else if (argument.startsWith("real to-string "))
-            {
-                Number.stringifyReal(argument, variables);
-            }
-            else if (argument.startsWith("get-whole-number "))
-            {
-                Number.parseWhole(argument, variables);
-            }
-            else if (argument.startsWith("get-real-number "))
-            {
-                Number.parseReal(argument, variables);
-            }
-
             /* textual operations */
             else if (argument.startsWith("to-upper("))
             {
@@ -142,6 +124,16 @@ public class Interpreter
                                     Number.divide(argument, variables);
                                 }
 
+                                /* conversion */
+                                else if (argument.startsWith(variableName + ".stringify("))
+                                {
+                                    Number.stringify(argument, variables);
+                                }
+                                else if (argument.startsWith(variableName + ".realify("))
+                                {
+                                    Number.parseReal(argument, variables);
+                                }
+
                                 break;
 
                             case "REAL NUMBER":
@@ -162,6 +154,16 @@ public class Interpreter
                                 else if (argument.startsWith(variableName + ".divide("))
                                 {
                                     Number.divideReal(argument, variables);
+                                }
+
+                                /* conversion */
+                                else if (argument.startsWith(variableName + ".stringify("))
+                                {
+                                    Number.stringifyReal(argument, variables);
+                                }
+                                else if (argument.startsWith(variableName + ".wholeify("))
+                                {
+                                    Number.parseWhole(argument, variables);
                                 }
 
                                 break;
