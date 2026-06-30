@@ -1,8 +1,7 @@
 package me.ferdis.humanlang;
 
-import me.ferdis.humanlang.tools.Printer;
+import me.ferdis.humanlang.tools.Interpreter;
 
-import java.io.IOException;
 import java.util.Scanner;
 
 public class Main

@@ -1,6 +1,5 @@
-package me.ferdis.humanlang;
+package me.ferdis.humanlang.tools;
 
-import me.ferdis.humanlang.tools.Printer;
 import me.ferdis.humanlang.types.Number;
 import me.ferdis.humanlang.types.Text;
 
@@ -34,7 +33,14 @@ public class Interpreter
                             .replace(" ", "")
                             .replace(";", "");
 
-                    Printer.line("> " + variables.get(variableChosen));
+                    if (variablesTypes.get(variableChosen).equals("TEXT"))
+                    {
+                        Printer.line("> \"" + variables.get(variableChosen) + "\"");
+                    }
+                    else
+                    {
+                        Printer.line("> " + variables.get(variableChosen));
+                    }
                 }
                 else
                 {
@@ -52,10 +58,6 @@ public class Interpreter
             else if (argument.startsWith("to-lower("))
             {
                 Text.lowercase(argument, variables);
-            }
-            else if (argument.startsWith("replace("))
-            {
-                Text.replace(argument, variables);
             }
 
             /* statements */
@@ -89,7 +91,7 @@ public class Interpreter
             }
             else if (argument.startsWith("text "))
             {
-                Text.register(argument, variables);
+                Text.register(argument, variables, variablesTypes);
             }
             else
             {
@@ -105,67 +107,11 @@ public class Interpreter
                         switch (variablesTypes.get(variableName))
                         {
                             case "WHOLE NUMBER":
-
-                                /* numeric operations */
-                                if (argument.startsWith(variableName + ".add("))
-                                {
-                                    Number.add(argument, variables);
-                                }
-                                else if (argument.startsWith(variableName + ".subtract("))
-                                {
-                                    Number.subtract(argument, variables);
-                                }
-                                else if (argument.startsWith(variableName + ".multiply("))
-                                {
-                                    Number.multiply(argument, variables);
-                                }
-                                else if (argument.startsWith(variableName + ".divide("))
-                                {
-                                    Number.divide(argument, variables);
-                                }
-
-                                /* conversion */
-                                else if (argument.startsWith(variableName + ".stringify("))
-                                {
-                                    Number.stringify(argument, variables);
-                                }
-                                else if (argument.startsWith(variableName + ".realify("))
-                                {
-                                    Number.parseReal(argument, variables);
-                                }
-
+                                Functions.wholeNumber(argument, variableName, variables, variablesTypes);
                                 break;
 
                             case "REAL NUMBER":
-
-                                /* numeric operations */
-                                if (argument.startsWith(variableName + ".add("))
-                                {
-                                    Number.addReal(argument, variables);
-                                }
-                                else if (argument.startsWith(variableName + ".subtract("))
-                                {
-                                    Number.subtractReal(argument, variables);
-                                }
-                                else if (argument.startsWith(variableName + ".multiply("))
-                                {
-                                    Number.multiplyReal(argument, variables);
-                                }
-                                else if (argument.startsWith(variableName + ".divide("))
-                                {
-                                    Number.divideReal(argument, variables);
-                                }
-
-                                /* conversion */
-                                else if (argument.startsWith(variableName + ".stringify("))
-                                {
-                                    Number.stringifyReal(argument, variables);
-                                }
-                                else if (argument.startsWith(variableName + ".wholeify("))
-                                {
-                                    Number.parseWhole(argument, variables);
-                                }
-
+                                Functions.realNumber(argument, variableName, variables, variablesTypes);
                                 break;
 
                             case "TEXT":

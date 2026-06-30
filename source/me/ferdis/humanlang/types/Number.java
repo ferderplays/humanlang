@@ -47,9 +47,9 @@ public class Number
 
         storage.put(variableName, whole);
 
-        typeStorage.put(variableName, "WHOLE NUMBER");
+        typeStorage.put(variableName, "REAL NUMBER");
 
-        Printer.line("[WHOLE NUMBER] name: " + variableName + " | value: " + whole);
+        Printer.line("[REAL NUMBER] name: " + variableName + " | value: " + whole);
 
         //Printer.print(wholeNumberVariables);
     }
@@ -199,22 +199,26 @@ public class Number
         storage.put(variable, number);
     }
 
-    public static void stringify(String argument, HashMap<String, Object> storage)
+    public static void stringify(String argument, HashMap<String, Object> storage, HashMap<String, String> typeStorage)
     {
         String variable = argument.substring(0, argument.indexOf("."));
 
         Integer toStringify = (Integer) storage.get(variable);
 
         storage.put(variable + "_string", toStringify.toString());
+
+        typeStorage.put(variable + "_string", "TEXT");
     }
 
-    public static void stringifyReal(String argument, HashMap<String, Object> storage)
+    public static void stringifyReal(String argument, HashMap<String, Object> storage, HashMap<String, String> typeStorage)
     {
         String variable = argument.substring(0, argument.indexOf("."));
 
         Double toStringify = (Double) storage.get(variable);
 
         storage.put(variable + "_string", toStringify.toString());
+
+        typeStorage.put(variable + "_string", "TEXT");
     }
 
     public static String toString(String argument, HashMap<String, Object> storage)
@@ -226,21 +230,25 @@ public class Number
         return toStringify.toString();
     }
 
-    public static void parseWhole(String argument, HashMap<String, Object> storage)
+    public static void parseWhole(String argument, HashMap<String, Object> storage, HashMap<String, String> typeStorage)
     {
         String variable = argument.substring(0, argument.indexOf("."));
 
         String toParse = (String) storage.get(variable);
 
         storage.put(variable + "_whole", Integer.parseInt(toParse));
+
+        typeStorage.put(variable + "_whole", "WHOLE NUMBER");
     }
 
-    public static void parseReal(String argument, HashMap<String, Object> storage)
+    public static void parseReal(String argument, HashMap<String, Object> storage, HashMap<String, String> typeStorage)
     {
         String variable = argument.substring(0, argument.indexOf("."));
 
         String toParse = (String) storage.get(variable);
 
         storage.put(variable + "_real", Double.parseDouble(toParse));
+
+        typeStorage.put(variable + "_real", "REAL NUMBER");
     }
 }

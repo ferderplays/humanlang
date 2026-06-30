@@ -1,27 +1,64 @@
 package me.ferdis.humanlang.types;
 
+import me.ferdis.humanlang.tools.Functions;
 import me.ferdis.humanlang.tools.Printer;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Text
 {
-    public static void register(String argument, HashMap<String, Object> storage)
+    public static void register(String argument, HashMap<String, Object> storage, HashMap<String, String> typeStorage)
     {
-        String variableName = argument.replace(argument.substring(argument.indexOf("=")), "")
+        // syntax: text <variable> = <value>;
+        /*String variableName = argument.replace(argument.substring(argument.indexOf("=")), "")
                 .replace(" ", "")
                 .replace("=", "")
                 .replace("\"", "")
                 .replace(";", "")
-                .replace("text", "");
+                .replace("text", "");*/
+
+        String variableName = argument.substring(0, argument.indexOf("="))
+                .replace("text", "")
+                .replace("=", "")
+                .replace(" ", "");
 
         String variableValue = argument.replace(argument.substring(0, argument.indexOf("=")), "")
-                .replace("=", "")
+                .replace("= ", "")
                 .replace(";", "");
 
-        storage.put(variableName, variableValue);
+        ArrayList<String> variableNames = new ArrayList<>(storage.keySet());
 
-        Printer.line("[TEXT] name: " + variableName + " | value: " + variableValue);
+        boolean isOfAVariable = false;
+
+        for (String variable : variableNames)
+        {
+            if (variableValue.startsWith(variable))
+            {
+                if (variableValue.startsWith(variable + ".replace("))
+                {
+                    String outcomeValue = replace(variableValue, storage);
+
+                    storage.put(variableName, outcomeValue);
+
+                    typeStorage.put(variableName, "TEXT");
+
+                    Printer.line("[TEXT] name: " + variableName + " | value: " + outcomeValue);
+                }
+                isOfAVariable = true;
+            }
+        }
+
+        if (!isOfAVariable)
+        {
+
+            variableValue = argument.substring(argument.indexOf("\"") + 1, argument.lastIndexOf("\""));
+            storage.put(variableName, variableValue);
+
+            typeStorage.put(variableName, "TEXT");
+
+            Printer.line("[TEXT] name: " + variableName + " | value: " + variableValue);
+        }
     }
 
     public static void uppercase(String argument, HashMap<String, Object> storage)
@@ -50,26 +87,30 @@ public class Text
         storage.put(variableName + "_upper", text.toLowerCase());
     }
 
-    public static void replace(String argument, HashMap<String, Object> storage)
+    public static String replace(String argument, HashMap<String, Object> storage)
     {
-        String[] arguments = argument.replace("replace(", "")
-                .replace(argument.substring(argument.indexOf("(")), "")
-                .replace(");", "")
-                .replace("\"", "")
-                .split(",");
+        // syntax: <variable>.replace(toReplace, replacer);
+        String variableName = argument.substring(0, argument.indexOf("."));
 
-        Printer.line(arguments);
+        String variable = (String) storage.get(variableName);
 
-        String variableName = arguments[0].replace(",", "").replace(" ", "");
-        String replaced = arguments[1].replace(",", "");
-        String replacable = arguments[2];
+        String arguments = argument.replace(argument.substring(0, argument.indexOf("(")), "")
+                .replace("(", "")
+                .replace(")", "");
 
-        String variable = storage.get(variableName).toString();
+        Printer.line("arguments > " + arguments);
 
-        String outcome = variable.replace(replaced, replacable);
+        String toReplace = arguments.replace(arguments.substring(arguments.indexOf(",")), "")
+                .replace("\"", "");
 
-        storage.remove(variableName);
+        Printer.line("to-replace > " + toReplace);
 
-        storage.put(variableName, outcome);
+        String replacer = arguments.replace(toReplace, "")
+                .replace(",", "")
+                .replace("\"", "");
+
+        Printer.line("replacer > " + replacer);
+
+        return variable.replace(toReplace, replacer);
     }
 }
