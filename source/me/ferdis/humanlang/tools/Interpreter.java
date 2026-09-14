@@ -2,6 +2,7 @@ package me.ferdis.humanlang.tools;
 
 import me.ferdis.humanlang.types.Number;
 import me.ferdis.humanlang.types.Text;
+import me.ferdis.humanlang.types.list.WholeList;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -92,6 +93,10 @@ public class Interpreter
             else if (argument.startsWith("text "))
             {
                 Text.register(argument, variables, variablesTypes);
+            }
+            else if (argument.startsWith("list<whole> "))
+            {
+                WholeList.registerList(argument, variables, variablesTypes);
             }
             else
             {
